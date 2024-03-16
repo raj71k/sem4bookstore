@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+<html>
+<head>
+    <title>Document</title>
+</head>
+<body>
+    {% block body %}
+    <div class="container">
+        <!-- Search Box -->
+        <div class="row mb-4">
+            <div class="col-md-6 offset-md-3">
+                <form method="post" action="{{ url_for('books') }}" class="d-flex">
+                    <input type="text" name="search_query" class="form-control me-2"
+                        placeholder="Search by Name or Author">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+            <div class="col-md-6 cart-container">
+                <span class="cart-icon">&#128722;</span> <!-- Unicode character for a cart icon -->
+                <a href="#" class="btn btn-success">View Cart</a>
+            </div>
+        </div>
+
+        <div class="row">
+            {%for book in books%}
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem; ">
+                    <img src="{{ book.image_link }}" class="card-img-top" style="height: 200px ;" alt="Book Image">
+                    <div class="card-body">
+                        <h5 class="card-title">{{book.name}}</h5>
+                        <p class="card-text">{{book.author}}</p>
+                        <p class="card-text"><b>Price : {{book.price}}</b></p>
+                        <a href="#" class="btn btn-primary btn-primary addToCart" data-book="{{ book.name }}" data-price="{{book.price}}" >Add to
+                            cart</a>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% endblock %}
+
+</body>
+
+</html>

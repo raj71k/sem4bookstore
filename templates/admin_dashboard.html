@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <h1>Welcome to the Admin Dashboard</h1>
+
+    <!-- Other content for the admin dashboard -->
+
+    <a href="{{ url_for('addbook') }}">Add a Book</a>
+    
+    <a href="{{ url_for('updatebooks') }}">Update a Book</a>
+{% endblock %}

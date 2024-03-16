@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{%  block body%}
+<form action="submitbook" method="post">
+    <input type="text" name="name" placeholder="booktitle">
+    <input type="text" name="author" placeholder="author">
+    <input type="text" name="image_link" id="image_link" required placeholder="image">
+    <input type="text" name="price" placeholder="price">
+    <input type="submit">
+</form>
+{%endblock%}

@@ -1,0 +1,45 @@
+
+nav{
+    margin-bottom: 5%;
+}
+.cart-container {
+    display: flex;
+   margin-left: 90%;
+    align-items: right;
+    margin-bottom: 20px;
+}
+
+.cart-icon {
+    font-size: 24px;
+    margin-right: 5px;
+}
+/* Table styling */
+table {
+    width: 50%;
+    border-collapse: collapse;
+  }
+  
+  /* Table header styling */
+  th {
+    background-color: #f2f2f2;
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  /* Table row styling */
+  td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+  }
+  
+  /* Alternating row background color */
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* Hover effect on rows */
+  tbody tr:hover {
+    background-color: #e2e2e2;
+  }
+  

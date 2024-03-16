@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    {% block body %}
+    <table>
+        <thead>
+            <tr>
+                <th>Book Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="orderTableBody">
+            <!-- Table rows will be appended here -->
+            {% for bookName, details in cart_data.items() %}
+            <tr>
+                <td>{{ bookName }}</td>
+                <td>{{ details.quantity }}</td>
+                {% if details is mapping %}
+                <td>{{ details.price|float|round }}</td>
+                <td>{{ (details.quantity * details.price|float)|round }}</td>
+                {% else %}
+                <td colspan="2">Price not available</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            <!-- Subtotal row -->
+            <tr>
+                <td colspan="3"></td>
+                <td>Subtotal: 
+                    {% set subtotal = 0 %}
+                    {% for bookName, details in cart_data.items() %}
+                        {% if details is mapping %}
+                        {% set itemTotal = details.quantity * details.price %}
+                       
+       
+                        {% set subtotal = subtotal + itemTotal %}
+
+                        {% endif %}
+                    {% endfor %}
+                   
+                    ${{ subtotal|float|round(2) }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {% endblock %}
+</body>
+</html>
