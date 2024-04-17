@@ -33,6 +33,8 @@ mail = Mail(app)
 Session(app)
 
 db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.init_app(app)
 
@@ -53,6 +55,15 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     role = db.Column(db.String(50), default='user')  # 'user' or 'admin'
+
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(500))
+    rating = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    book_name = db.Column(db.String(100), db.ForeignKey('book.name'), nullable=False)
+    user = db.relationship('User', backref=db.backref('reviews', lazy=True))
+    book = db.relationship('Book', backref=db.backref('reviews', lazy=True))
 
 #from models import User, Admin  # Import User and Admin directly
 with app.app_context():

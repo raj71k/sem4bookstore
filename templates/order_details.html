@@ -16,6 +16,7 @@
         </thead>
         <tbody id="orderTableBody">
             <!-- Table rows will be appended here -->
+            {% set ns = namespace(total_amount = 0) %}
             {% for bookName, details in cart_data.items() %}
             <tr>
                 <td>{{ bookName }}</td>
@@ -23,28 +24,15 @@
                 {% if details is mapping %}
                 <td>{{ details.price|float|round }}</td>
                 <td>{{ (details.quantity * details.price|float)|round }}</td>
+                {% set  ns.total_amount=ns.total_amount + (details.quantity * details.price|float)|round %}
                 {% else %}
                 <td colspan="2">Price not available</td>
                 {% endif %}
             </tr>
             {% endfor %}
-            <!-- Subtotal row -->
             <tr>
-                <td colspan="3"></td>
-                <td>Subtotal: 
-                    {% set subtotal = 0 %}
-                    {% for bookName, details in cart_data.items() %}
-                        {% if details is mapping %}
-                        {% set itemTotal = details.quantity * details.price %}
-                       
-       
-                        {% set subtotal = subtotal + itemTotal %}
-
-                        {% endif %}
-                    {% endfor %}
-                   
-                    ${{ subtotal|float|round(2) }}
-                </td>
+                <td colspan="3">Total Amount</td>
+                <td>{{ ns.total_amount }}</td>
             </tr>
         </tbody>
     </table>

@@ -1,47 +1,46 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const cartContainer = document.querySelector('.cart-container');
-    const cart = {};
+// Check if the event listeners have already been added
+if (!document.cartListenersAdded) {
+    document.addEventListener('DOMContentLoaded', function () {
+        const addToCartButtons = document.querySelectorAll('.addToCart');
+        const viewCartButton = document.querySelector('.cart-container .btn-success');
+        const cart = {};
 
-    cartContainer.addEventListener('click', function(event) {
-        if (event.target.classList.contains('addToCart')) {
-            const button = event.target;
-            const bookName = button.getAttribute('data-book');
-            const bookPrice = parseFloat(button.getAttribute('data-price'));
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const bookName = this.getAttribute('data-book');
+                const bookPrice = parseFloat(this.getAttribute('data-price'));
+                if (cart[bookName]) {
+                    cart[bookName].quantity++;
+                } else {
+                    cart[bookName] = { quantity: 1, price: bookPrice };
+                }
+                console.log('Cart Updated:', cart); // Log the updated cart
+                updateCartCount();
+            });
+        });
 
-            if (cart[bookName]) {
-                cart[bookName].quantity++;
-            } else {
-                cart[bookName] = { quantity: 1, price: bookPrice };
-            }
-
-            console.log('Cart Updated:', cart); // Log the updated cart
-            updateCartCount();
-        } else if (event.target.classList.contains('btn-success')) {
+        viewCartButton.addEventListener('click', function () {
             console.log('View Cart Clicked');
             const cartJson = encodeURIComponent(JSON.stringify(cart));
             window.location.href = '/order?cart=' + cartJson;
+        });
+
+        function updateCartCount() {
+            // Calculate the total quantity from the cart data
+            const totalQuantity = Object.values(cart).reduce((acc, val) => {
+                if (val && typeof val === 'object' && val.quantity) {
+                    return acc + val.quantity;
+                } else if (typeof val === 'number') {
+                    return acc + val;
+                }
+                return acc;
+            }, 0);
+
+            // Update the cart count display (you can customize this part based on your UI)
+            viewCartButton.innerHTML = `View Cart (${totalQuantity})`;
         }
+
+        // Set flag indicating that event listeners have been added
+        document.cartListenersAdded = true;
     });
-
-    function updateCartCount() {
-        // Calculate the total quantity and subtotal from the cart data
-        let totalQuantity = 0;
-        let subtotal = 0;
-        for (const item in cart) {
-            if (cart.hasOwnProperty(item)) {
-                totalQuantity += cart[item].quantity;
-                subtotal += cart[item].quantity * cart[item].price;
-            }
-        }
-
-        // Update the cart count display
-        const viewCartButton = document.querySelector('.cart-container .btn-success');
-        viewCartButton.innerHTML = `View Cart (${totalQuantity})`;
-
-        // Update the subtotal display
-        const subtotalElement = document.getElementById('subtotal');
-        if (subtotalElement) {
-            subtotalElement.textContent = `Subtotal: $${subtotal.toFixed(2)}`;
-        }
-    }
-});
+}
